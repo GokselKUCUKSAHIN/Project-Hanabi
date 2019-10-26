@@ -84,6 +84,11 @@ public class Main extends Application
                 Particle particle = Particle.particles.get(i);
                 particle.update();
             }
+            for (int i = 0; i < FireWork.fireWorks.size(); i++)
+            {
+                FireWork fireWork = FireWork.fireWorks.get(i);
+                fireWork.update();
+            }
         }));
         update.setCycleCount(Timeline.INDEFINITE);
         update.setRate(1);

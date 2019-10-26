@@ -1,0 +1,4 @@
+interface IFallable
+{
+    void fall();
+}

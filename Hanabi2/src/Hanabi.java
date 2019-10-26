@@ -5,7 +5,7 @@ import org.omg.CORBA.MARSHAL;
 
 import java.util.ArrayList;
 
-public class Hanabi implements IObservable
+public class Hanabi implements IObservable, IFallable
 {
 
     private double x;
@@ -51,9 +51,9 @@ public class Hanabi implements IObservable
         this.xVel += this.xAcc;
         this.x += xVel;
         // X
-        if(x > rx || x < lx)
+        if (x > rx || x < lx)
         {
-            xVel*=-1;
+            xVel *= -1;
         }
         this.body.setCenterX(x);
         this.xAcc = xVel * -0.005;
@@ -64,7 +64,7 @@ public class Hanabi implements IObservable
         this.yAcc = yVel * -0.01;
         if (isLaunched && !isExploded)
         {
-            this.yAcc += GRAVITY;
+            fall();
         }
         System.out.printf("%3.2f\n", yVel);
         if (this.yVel <= -1)
@@ -84,7 +84,7 @@ public class Hanabi implements IObservable
         // Launch it
         this.isLaunched = true;
         this.yAcc += Utils.getRandom(14, 16);
-        this.xAcc = Utils.getRandom(1,3);
+        this.xAcc = Utils.getRandom(1, 3);
     }
 
     public void reset()
@@ -112,11 +112,30 @@ public class Hanabi implements IObservable
         // When slows and starts falling
         this.body.setFill(Color.RED);
         isExploded = true;
+        Color test = Color.hsb(Utils.getRandom(0,360),1,1);
+        for (int i = 0; i < 100; i++)
+        {
+            Color var = test;
+
+            for (int j = 0; j < Utils.getRandomInt(5); j++)
+            {
+                var.darker();
+            }
+            FireWork a = new FireWork(this.x, this.y,var);
+
+            Main.child.add(a.getNode());
+        }
     }
 
     @Override
     public Node getNode()
     {
         return this.body;
+    }
+
+    @Override
+    public void fall()
+    {
+        this.yAcc += GRAVITY;
     }
 }
