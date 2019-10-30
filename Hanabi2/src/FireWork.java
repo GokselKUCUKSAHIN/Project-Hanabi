@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 
 
-public class FireWork implements IFallable,IObservable
+public class FireWork implements IFallable, IObservable
 {
 
     Circle body;
@@ -13,9 +13,10 @@ public class FireWork implements IFallable,IObservable
     double y;
     Color fillColor;
     Color borderColor;
-    double power = Utils.getRandom(0,15);
-    double angle = Utils.getRandom(0,360);
+    double power = Utils.getRandom(0, 15);
+    double angle = Utils.getRandom(0, 360);
 
+    int deadCount = 150;
     double xVel = 0;
     double yVel = 0;
 
@@ -28,11 +29,11 @@ public class FireWork implements IFallable,IObservable
         this.x = x;
         this.y = y;
         //
-        this.body = new Circle(x,y,3,fillColor);
+        this.body = new Circle(x, y, 3, fillColor);
         body.setStrokeWidth(0.5);
         body.setStroke(borderColor);
-        xVel = power*Math.cos(Utils.angleToRadian(angle));
-        yVel = -power*Math.sin(Utils.angleToRadian(angle));
+        xVel = power * Math.cos(Utils.angleToRadian(angle));
+        yVel = -power * Math.sin(Utils.angleToRadian(angle));
         fireWorks.add(this);
     }
 
@@ -48,11 +49,18 @@ public class FireWork implements IFallable,IObservable
         fall();
         this.xVel *= 0.90;
         this.yVel *= 0.90;
+        if(deadCount <= 0)
+        {
+            Main.child.remove(this.getNode());
+            fireWorks.remove(this);
+        }
     }
+
     @Override
     public void fall()
     {
         this.yVel += 0.01;
+        deadCount--;
     }
 
     @Override

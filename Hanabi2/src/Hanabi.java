@@ -32,8 +32,8 @@ public class Hanabi implements IObservable, IFallable
         x = Utils.getRandom(100, Main.width - 100);
         y = Main.height - 20;
         //
-        rx = x + Utils.getRandom(3, 7);
-        lx = x - Utils.getRandom(3, 7);
+        rx = x + Utils.getRandom(3, 6);
+        lx = x - Utils.getRandom(3, 6);
         //y = Utils.getRandom(Main.height);
         draw();
         hanabis.add(this);
@@ -66,7 +66,7 @@ public class Hanabi implements IObservable, IFallable
         {
             fall();
         }
-        System.out.printf("%3.2f\n", yVel);
+        //System.out.printf("%3.2f\n", yVel);
         if (this.yVel <= -1)
         {
             this.explode();
@@ -81,10 +81,13 @@ public class Hanabi implements IObservable, IFallable
 
     public void launchCode()
     {
-        // Launch it
-        this.isLaunched = true;
-        this.yAcc += Utils.getRandom(14, 16);
-        this.xAcc = Utils.getRandom(1, 3);
+        if(!isLaunched)
+        {
+            // Launch it
+            this.isLaunched = true;
+            this.yAcc += Utils.getRandom(14, 16);
+            this.xAcc = Utils.getRandom(1, 3);
+        }
     }
 
     public void reset()
@@ -112,19 +115,18 @@ public class Hanabi implements IObservable, IFallable
         // When slows and starts falling
         this.body.setFill(Color.RED);
         isExploded = true;
-        Color test = Color.hsb(Utils.getRandom(0,360),1,1);
+        Color test = Color.hsb(Utils.getRandom(0, 360), 1, 1);
         for (int i = 0; i < 100; i++)
         {
             Color var = test;
-
             for (int j = 0; j < Utils.getRandomInt(5); j++)
             {
-                var.darker();
+                var = var.brighter();
             }
-            FireWork a = new FireWork(this.x, this.y,var);
-
+            FireWork a = new FireWork(this.x, this.y, var);
             Main.child.add(a.getNode());
         }
+        reset();
     }
 
     @Override
