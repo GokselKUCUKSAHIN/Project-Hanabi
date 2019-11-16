@@ -21,6 +21,7 @@ public class Hanabi implements IObservable, IFallable
 
     private boolean isLaunched = false;
     private boolean isExploded = false;
+    private boolean isArmed = false;
 
     private Circle body;
 
@@ -78,14 +79,39 @@ public class Hanabi implements IObservable, IFallable
         }
     }
 
+    public static void arm()
+    {
+        for (Hanabi hanabi : hanabis)
+        {
+            hanabi.isArmed = true;
+        }
+    }
+
+    public static void disarm()
+    {
+        for (Hanabi hanabi : hanabis)
+        {
+            hanabi.isArmed = false;
+        }
+    }
+
+    public void setArm()
+    {
+        this.isArmed = true;
+    }
+
+    public void disArm()
+    {
+        this.isArmed = false;
+    }
 
     public void launchCode()
     {
-        if(!isLaunched)
+        if (!isLaunched)
         {
             // Launch it
             this.isLaunched = true;
-            this.yAcc += Utils.getRandom(14, 16);
+            this.yAcc += Utils.getRandom(12, 14);
             this.xAcc = Utils.getRandom(1, 3);
         }
     }
@@ -100,7 +126,7 @@ public class Hanabi implements IObservable, IFallable
 
         // Re-seting all positioning variables
         this.y = Main.height - 20;
-        this.x = Utils.getRandom(100, Main.width - 100);
+        this.x = Utils.getRandomInt(100, Main.width - 100);
         rx = x + Utils.getRandom(5, 7);
         lx = x - Utils.getRandom(5, 7);
 

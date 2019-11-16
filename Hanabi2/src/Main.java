@@ -20,6 +20,8 @@ public class Main extends Application
     private static Color backcolor = Color.rgb(51, 51, 51);
 
     private static Timeline update;
+    private static Timeline dispenser;
+    private static boolean isDispense = false;
 
     @Override
     public void start(Stage stage) throws Exception
@@ -27,7 +29,7 @@ public class Main extends Application
         Pane root = new Pane();
         child = root.getChildren();
         //
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 5; i++)
         {
             new Hanabi();
         }
@@ -61,7 +63,15 @@ public class Main extends Application
                 case F4:
                 {
                     //
-                    Hanabi.hanabis.get(0).launchCode();
+                    //Hanabi.hanabis.get(0).launchCode();
+                    isDispense = !isDispense;
+                    if (isDispense)
+                    {
+                        dispenser.play();
+                    } else
+                    {
+                        dispenser.pause();
+                    }
                     break;
                 }
                 case F5:
@@ -72,6 +82,16 @@ public class Main extends Application
                 }
             }
         });
+
+        dispenser = new Timeline(new KeyFrame(Duration.millis(400), e -> {
+            int rand = Utils.getRandomInt(Hanabi.hanabis.size());
+            Hanabi.hanabis.get(rand).launchCode();
+        }));
+
+        dispenser.setRate(1);
+        dispenser.setCycleCount(Timeline.INDEFINITE);
+        dispenser.setAutoReverse(false);
+
         update = new Timeline(new KeyFrame(Duration.millis(16), e -> {
             //60 fps
             //System.out.println("loop test");
